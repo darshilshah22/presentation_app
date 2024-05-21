@@ -12,36 +12,28 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
   LessonBloc() : super(LessonInitial()) {
     on<GetLessonData>((event, emit) async {
       emit(GetLessonDataLoading());
-      List<Threed> threeds = [];
+      List<dynamic> lessonList = [];
       try {
         List<dynamic>? response = await fetchLessonPlanData(event.lessonId);
 
-        ImageModel imageModel = ImageModel.fromJson(response![0]['image']);
-        YoutubeVideo youtubeVideo =
-            YoutubeVideo.fromJson(response[1]['YoutubeVideo']);
-        Link link = Link.fromJson(response[2]['link']);
-        Gdrive gdrive = Gdrive.fromJson(response[3]['gdrive']);
-        Threed threed = Threed.fromJson(response[4]['threed']);
-        Threed threed1 = Threed.fromJson(response[5]['threed']);
-        Threed threed2 = Threed.fromJson(response[6]['threed']);
-        Mcq mcq = Mcq.fromJson(response[7]['mcq']);
-        Fib fib = Fib.fromJson(response[8]['fib']);
-        Tf tf = Tf.fromJson(response[9]['tf']);
-        Owa owa = Owa.fromJson(response[10]['owa']);
-        threeds.addAll([threed, threed1, threed2]);
-
-        LessonModel lessonModel = LessonModel(
-          image: imageModel,
-          youtubeVideo: youtubeVideo,
-          link: link,
-          gdrive: gdrive,
-          threeds: threeds,
-          mcq: mcq,
-          fib: fib,
-          tf: tf,
-          owa: owa,
+        lessonList.addAll(
+          [
+            ImageModel.fromJson(response![0]['image']),
+            YoutubeVideo.fromJson(response[1]['YoutubeVideo']),
+            Link.fromJson(response[2]['link']),
+            Gdrive.fromJson(response[3]['gdrive']),
+            Threed.fromJson(response[4]['threed']),
+            Threed.fromJson(response[5]['threed']),
+            Threed.fromJson(response[6]['threed']),
+            Mcq.fromJson(response[7]['mcq']),
+            Fib.fromJson(response[8]['fib']),
+            Tf.fromJson(response[9]['tf']),
+            Owa.fromJson(response[10]['owa'])
+          ],
         );
-        log(lessonModel.toJson().toString());
+
+        log(lessonList[1].toJson().toString());
+        emit(GetLessonDataSuccess(lessonList: lessonList));
       } catch (e) {
         log(e.toString());
         emit(GetLessonDataError(error: e.toString()));

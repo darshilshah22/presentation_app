@@ -1,112 +1,18 @@
-class LessonData {
-  List<LessonModel>? data;
-
-  LessonData({this.data});
-
-  LessonData.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <LessonModel>[];
-      json['data'].forEach((v) {
-        data!.add(LessonModel.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class LessonModel {
-  ImageModel? image;
-  YoutubeVideo? youtubeVideo;
-  Link? link;
-  Gdrive? gdrive;
-  List<Threed>? threeds;
-  Mcq? mcq;
-  Fib? fib;
-  Tf? tf;
-  Owa? owa;
-
-  LessonModel(
-      {this.image,
-      this.youtubeVideo,
-      this.link,
-      this.gdrive,
-      this.threeds,
-      this.mcq,
-      this.fib,
-      this.tf,
-      this.owa});
-
-  LessonModel.fromJson(Map<String, dynamic> json) {
-    image = json['image'] != null ? ImageModel.fromJson(json['image']) : null;
-    youtubeVideo = json['YoutubeVideo'] != null
-        ? YoutubeVideo.fromJson(json['YoutubeVideo'])
-        : null;
-    link = json['link'] != null ? Link.fromJson(json['link']) : null;
-    gdrive = json['gdrive'] != null ? Gdrive.fromJson(json['gdrive']) : null;
-    if (json['threeds'] != null) {
-      threeds = <Threed>[];
-      json['data'].forEach((v) {
-        threeds!.add(Threed.fromJson(v));
-      });
-    }
-    mcq = json['mcq'] != null ? Mcq.fromJson(json['mcq']) : null;
-    fib = json['fib'] != null ? Fib.fromJson(json['fib']) : null;
-    tf = json['tf'] != null ? Tf.fromJson(json['tf']) : null;
-    owa = json['owa'] != null ? Owa.fromJson(json['owa']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (image != null) {
-      data['image'] = image!.toJson();
-    }
-    if (youtubeVideo != null) {
-      data['YoutubeVideo'] = youtubeVideo!.toJson();
-    }
-    if (link != null) {
-      data['link'] = link!.toJson();
-    }
-    if (gdrive != null) {
-      data['gdrive'] = gdrive!.toJson();
-    }
-    if (threeds != null) {
-      data['threeds'] = threeds!.map((v) => v.toJson()).toList();
-    }
-    if (mcq != null) {
-      data['mcq'] = mcq!.toJson();
-    }
-    if (fib != null) {
-      data['fib'] = fib!.toJson();
-    }
-    if (tf != null) {
-      data['tf'] = tf!.toJson();
-    }
-    if (owa != null) {
-      data['owa'] = owa!.toJson();
-    }
-    return data;
-  }
-}
-
 class ImageModel {
   String? imageUrl;
+  String? ltype;
 
-  ImageModel({this.imageUrl});
+  ImageModel({this.imageUrl, this.ltype});
 
   ImageModel.fromJson(Map<String, dynamic> json) {
     imageUrl = json['image_url'];
+    ltype = json['ltype'] ?? "image";
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['image_url'] = imageUrl;
+    data['ltype'] = ltype ?? "image";
     return data;
   }
 }
@@ -116,14 +22,17 @@ class YoutubeVideo {
   String? thumbnail;
   String? videoUrl;
   String? embedUrl;
+  String? ltype;
 
-  YoutubeVideo({this.name, this.thumbnail, this.videoUrl, this.embedUrl});
+  YoutubeVideo(
+      {this.name, this.thumbnail, this.videoUrl, this.embedUrl, this.ltype});
 
   YoutubeVideo.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     thumbnail = json['thumbnail'];
     videoUrl = json['video_url'];
     embedUrl = json['embed_url'];
+    ltype = json['ltype'] ?? "youtube";
   }
 
   Map<String, dynamic> toJson() {
@@ -132,22 +41,26 @@ class YoutubeVideo {
     data['thumbnail'] = thumbnail;
     data['video_url'] = videoUrl;
     data['embed_url'] = embedUrl;
+    data['ltype'] = ltype ?? "youtube";
     return data;
   }
 }
 
 class Link {
   String? src;
+  String? ltype;
 
-  Link({this.src});
+  Link({this.src, this.ltype});
 
   Link.fromJson(Map<String, dynamic> json) {
     src = json['src'];
+    ltype = json['ltype'] ?? "link";
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['src'] = src;
+    data['ltype'] = ltype ?? "link";
     return data;
   }
 }
@@ -158,8 +71,15 @@ class Gdrive {
   String? thumbnail;
   String? type;
   String? url;
+  String? ltype;
 
-  Gdrive({this.name, this.embedUrl, this.thumbnail, this.type, this.url});
+  Gdrive(
+      {this.name,
+      this.embedUrl,
+      this.thumbnail,
+      this.type,
+      this.url,
+      this.ltype});
 
   Gdrive.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -167,6 +87,7 @@ class Gdrive {
     thumbnail = json['thumbnail'];
     type = json['type'];
     url = json['url'];
+    ltype = json['ltype'] ?? "gdrive";
   }
 
   Map<String, dynamic> toJson() {
@@ -176,6 +97,7 @@ class Gdrive {
     data['thumbnail'] = thumbnail;
     data['type'] = type;
     data['url'] = url;
+    data['ltype'] = ltype ?? "gdrive";
     return data;
   }
 }
@@ -187,9 +109,16 @@ class Threed {
   int? modelid;
   String? url;
   List<String>? labels;
+  String? ltype;
 
   Threed(
-      {this.name, this.id, this.category, this.modelid, this.url, this.labels});
+      {this.name,
+      this.id,
+      this.category,
+      this.modelid,
+      this.url,
+      this.labels,
+      this.ltype});
 
   Threed.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -198,6 +127,7 @@ class Threed {
     modelid = json['modelid'];
     url = json['url'];
     labels = json['labels'].cast<String>();
+    ltype = json['ltype'] ?? "threed";
   }
 
   Map<String, dynamic> toJson() {
@@ -208,6 +138,7 @@ class Threed {
     data['modelid'] = modelid;
     data['url'] = url;
     data['labels'] = labels;
+    data['ltype'] = ltype ?? "threed";
     return data;
   }
 }
@@ -218,13 +149,15 @@ class Mcq {
   String? question;
   String? answer;
   String? questionUrl;
+  String? ltype;
 
   Mcq(
       {this.options,
       this.mcqType,
       this.question,
       this.answer,
-      this.questionUrl});
+      this.questionUrl,
+      this.ltype});
 
   Mcq.fromJson(Map<String, dynamic> json) {
     options = json['options'].cast<String>();
@@ -232,6 +165,7 @@ class Mcq {
     question = json['question'];
     answer = json['answer'];
     questionUrl = json['question_url'];
+    ltype = json['ltype'] ?? "mcq";
   }
 
   Map<String, dynamic> toJson() {
@@ -241,6 +175,7 @@ class Mcq {
     data['question'] = question;
     data['answer'] = answer;
     data['question_url'] = questionUrl;
+    data['ltype'] = ltype ?? "mcq";
     return data;
   }
 }
@@ -250,14 +185,21 @@ class Fib {
   String? answer;
   String? questionForm;
   String? answerIndex;
+  String? ltype;
 
-  Fib({this.question, this.answer, this.questionForm, this.answerIndex});
+  Fib(
+      {this.question,
+      this.answer,
+      this.questionForm,
+      this.answerIndex,
+      this.ltype});
 
   Fib.fromJson(Map<String, dynamic> json) {
     question = json['question'];
     answer = json['answer'];
     questionForm = json['question_form'];
     answerIndex = json['answer_index'];
+    ltype = json['ltype'] ?? "fib";
   }
 
   Map<String, dynamic> toJson() {
@@ -266,6 +208,7 @@ class Fib {
     data['answer'] = answer;
     data['question_form'] = questionForm;
     data['answer_index'] = answerIndex;
+    data['ltype'] = ltype ?? "fib";
     return data;
   }
 }
@@ -275,14 +218,16 @@ class Tf {
   String? question;
   String? answer;
   String? questionUrl;
+  String? ltype;
 
-  Tf({this.options, this.question, this.answer, this.questionUrl});
+  Tf({this.options, this.question, this.answer, this.questionUrl, this.ltype});
 
   Tf.fromJson(Map<String, dynamic> json) {
     options = json['options'].cast<String>();
     question = json['question'];
     answer = json['answer'];
     questionUrl = json['question_url'];
+    ltype = json['ltype'] ?? "tf";
   }
 
   Map<String, dynamic> toJson() {
@@ -291,6 +236,7 @@ class Tf {
     data['question'] = question;
     data['answer'] = answer;
     data['question_url'] = questionUrl;
+    data['ltype'] = ltype ?? "tf";
     return data;
   }
 }
@@ -299,13 +245,15 @@ class Owa {
   String? question;
   String? answer;
   String? questionUrl;
+  String? ltype;
 
-  Owa({this.question, this.answer, this.questionUrl});
+  Owa({this.question, this.answer, this.questionUrl, this.ltype});
 
   Owa.fromJson(Map<String, dynamic> json) {
     question = json['question'];
     answer = json['answer'];
     questionUrl = json['question_url'];
+    ltype = json['ltype'] ?? "owa";
   }
 
   Map<String, dynamic> toJson() {
@@ -313,6 +261,7 @@ class Owa {
     data['question'] = question;
     data['answer'] = answer;
     data['question_url'] = questionUrl;
+    data['ltype'] = ltype ?? "owa";
     return data;
   }
 }

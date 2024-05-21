@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:presentation_app/providers/lesson_provider.dart';
+import 'package:provider/provider.dart';
 import 'screens/presentation_screen.dart';
 
 void main() {
@@ -10,14 +12,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Presentation App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-        primaryColor: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => LessonProvider(),
+      child: MaterialApp(
+        title: 'Presentation App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Roboto',
+          primaryColor: Colors.blue,
+          scaffoldBackgroundColor: const Color(0xFFE6E6E6)
+        ),
+        home: const PresentationScreen(),
       ),
-      home: const PresentationScreen(),
     );
   }
 }
