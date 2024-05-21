@@ -182,16 +182,25 @@ class _PresentationScreenState extends State<PresentationScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ButtonWidget(
-              onTap: () {
-                _previousPage(provider.pageIndex);
-              },
-              title: previous,
+            if (provider.pageIndex != 0)
+              ButtonWidget(
+                onTap: () {
+                  _previousPage(provider.pageIndex);
+                },
+                title: previous,
+              ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: provider.pageIndex == 0 ? 16.0 : 0,
+                  right:
+                      provider.pageIndex == (lessonTypes.length - 1) ? 16 : 0),
+              child: Text(
+                "${provider.pageIndex + 1} / ${lessonTypes.length}",
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
             ),
-            Text(
-              "${provider.pageIndex + 1} / ${lessonTypes.length}",
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
+            if (provider.pageIndex != (lessonTypes.length - 1))
             ButtonWidget(
               onTap: () {
                 _nextPage(provider.pageIndex);
